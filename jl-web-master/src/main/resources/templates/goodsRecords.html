@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:display="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="icon" href="images/logo.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="images/logo.png" sizes="16x16" type="image/png">
+    <meta name="keywords" content="津陵科技,管理,后台">
+    <meta name="author" content="lilu">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index-admin.css">
+    <link rel="stylesheet" href="css/index-icons.css">
+    <link rel="stylesheet" href="css/index-icons1.css">
+    <link rel="stylesheet" href="css/goodsRecords.css">
+    <link rel="stylesheet" href="css/goodsRecords-table.css">
+    <link rel="stylesheet" href="css/tempus-dominus.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        nav li {
+            margin-right: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+    </style>
+    <title>津陵科技 - 包裹出入库记录</title>
+</head>
+<body>
+    <div class="bsa-sidebar" style="float: left;width: 20%">
+        <div class="bsa-sidebar-header">
+            <img src="images/logo.png" class="bsa-logo-icon" alt="logo-icon">
+            <div class="bsa-logo-text">津陵科技</div>
+        </div>
+        <div class="bsa-sidebar-body">
+            <ul>
+                <div th:each="url : ${session.urllist}">
+                <li>
+                    <a href="http://127.0.0.1:8080/show_user_manage" class="active">
+                        <i class="bi bi-house"></i><a th:href="${url['link_url']}" ><p th:text="${url['name']}"></p></a>
+                    </a>
+                </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+<div class="bg-light pt-2"  style="float: right;width: 80%">
+    <div>
+        <nav>
+            <ul>
+                <li><a href="#">津陵科技</a></li>
+                <div th:each="url : ${session.urllist}">
+                    <li><a th:href="${url['link_url']}" ><p th:text="${url['name']}"></p></a></li>
+                </div>
+            </ul>
+            <a href="/">退出</a>
+        </nav>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="card border-0 shadow-sm pb-2">
+                    <div class="lu-daohang">
+                        <div class="lu-blue"></div><div class="lu-liubai"></div>
+                        <h6>包裹出入库记录</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--四个信息卡-->
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-2 mb-3">
+            <div class="col">
+                <div class="card border-0 shadow-sm ">
+                    <div class="card-body pb-2 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="me-1">
+                                <div class="float-start lu-ruku mt-2 me-2"></div>
+                                <div class="float-start me-4">
+                                    <h6 class="mb-2">近30天入库</h6>
+                                </div>
+                                <div class="float-end lu-ruku-color ms-4">
+                                    <h5 class="mb-1" th:text="${sumin}+'件'"></h5>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm ">
+                    <div class="card-body pb-2 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="me-1">
+                                <div class="float-start lu-chuku mt-2 me-2"></div>
+                                <div class="float-start me-4">
+                                    <h6 class="mb-2">近30天出库</h6>
+                                </div>
+                                <div class="float-end lu-chuku-color ms-4">
+                                    <h5 class="mb-1" th:text="${sumout}+'件'"></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm ">
+                    <div class="card-body pb-2 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="me-1">
+                                <div class="float-start lu-zhiliu mt-2 me-2"></div>
+                                <div class="float-start me-4">
+                                    <h6 class="mb-2">滞留快件</h6>
+                                </div>
+                                <div class="float-end lu-zhiliu-color ms-4">
+                                    <h5 class="mb-1" th:text="${stranded}+'件'"></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-sm ">
+                    <div class="card-body pb-2 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="me-1">
+                                <div class="float-start lu-yichang mt-2 me-2"></div>
+                                <div class="float-start me-4">
+                                    <h6 class="mb-2">异常快件</h6>
+                                </div>
+                                <div class="float-end lu-yichang-color ms-4">
+                                    <h5 class="mb-1" th:text="${erro}+'件'"></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <form class="row row-cols-lg-auto g-3 align-items-center justify-content-center">
+
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="addresseePhone" name="addresseePhone" aria-label="q" placeholder="手机尾号后四位">
+                        <!--                            <input type="text" readonly class="form-control" aria-label="q" placeholder="结束时间" name="endTime" id="endTime">-->
+                    </div>
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="state" name="state" aria-label="q" placeholder="状态">
+                    </div>
+                    <div class="col-12">
+                        <input type="text" class="form-control" id="Tracking_number" name="keyword" aria-label="q" placeholder="快递单号">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary" onclick="querySearch()"><i class="bi bi-search"></i>
+                            搜索
+                        </button>
+                        <button type="submit" class="btn btn-primary" onclick="restSearch()"><i class="bi bi-x-circle"></i>
+                            重置
+                        </button>
+                    </div>
+
+                </form>
+
+                <hr>
+
+                <!--                <div class="d-flex  gap-1 my-3">
+                                    <button class="btn btn-danger"><i class="bi bi-trash"></i> 批量删除</button>
+                                </div>-->
+
+                <!-- script制作table 用后端数据库内容替换 -->
+                <table id="table">
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- 分页 -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap-admin.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+
+    <!--日期时间-->
+    <script src="js/popper.min.js"></script>
+    <script src="js/tempus-dominus.min.js"></script>
+    <script src="js/customDateFormat.js"></script>
+
+    <!--bootstrap-table-->
+    <script src="js/bootstrap-table.min.js"></script>
+    <script src="js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script>
+
+        /**
+         * columns表示列，里面的对象 title是表头信息，field是服务端返回的字段名称
+         * 1.不做分页，返回的数据格式是 [{},{}]
+         * 2.如果要开启分页，需要配置pagination:true, sidePagination:'client|server'
+         * 3.客户端分页所需要的格式和不做分页时是一样的 都是 :[{},{}]
+         * 4.服务端分页返回的格式为：{rows:[{},{}],total:200}
+         * 参考：https://github.com/wenzhixin/bootstrap-table-examples/blob/master/json/data2.json
+         */
+        $('#table').bootstrapTable({
+            locale: 'zh-CN',
+            //设置高度，就可以固定表头，用户体验良好
+            height: 380,
+            //jsonplaceholder提供的api服务模拟请求，开发时需换成自己的接口
+            //连接后端数据库
+            url: "/goodsRecords/listpage",
+            //是否开启分页
+            pagination: true,
+            //是客户端分页还是服务端分页  'client','server',由于演示没有后端提供服务，所以采用前端分页演示
+            sidePagination: 'server',
+            //配置分页大小
+            pageSize:10,
+            pageList: "[10, 15, 20, 25]",
+            //params是一个对象
+            queryParams: function (params) {
+                params.q = $("#Tracking_number").val();//因为jsonplaceholder的搜索必须是q
+                params.addresseePhone= $("#addresseePhone").val();
+                params.state =  $('#state').val();//还有什么参数以此类推
+                return params;
+            },
+            //列
+            columns: [
+                {
+                    title: 'ID',
+                    field: 'id',
+                    align: 'center'
+                },
+                {
+                    title: '快递号',
+                    field: 'tracking_number',
+                    align: 'center'
+                },
+                {
+                    title: '收件人',
+                    field: 'addressee',
+                    align: 'center'
+                },
+                {
+                    title: '取件码',
+                    field: 'pickupcode',
+                    align: 'center',
+                },
+                {
+                    title: '收件人电话',
+                    field: 'addresseePhone',
+                    align: 'center',
+                },
+                {
+                    title: '入库时间',
+                    field: 'timein',
+                    align: 'center',
+                },
+                {
+                    title: '出库时间',
+                    field: 'timeout',
+                    align: 'center',
+                },
+                {
+                    title: '当前状态',
+                    field: 'state',
+                    align: 'center',
+                },
+                {
+                    title: '入库人',
+                    field: 'name',
+                    align: 'center',
+                },
+                {
+                    title: '取件人',
+                    field: 'piker',
+                    align: 'center',
+                }
+               /* {
+                    title: '操作',
+                    field: 'operation',
+                    align: 'center',
+                    formatter: formatAction
+                }*/
+            ]
+        });
+
+        //格式化列数据演示 val:当前数据 rows:当前整行数据
+        function formatCompleted(val, rows) {
+            return val === true ? '<span class="badge bg-success">已完成</span>' : '<span class="badge bg-warning text-dark">未完成</span>';
+        }
+
+        //格式化操作列
+        function formatAction(val, rows) {
+            return `<button class="btn btn-info">编辑</button> <button onclick="delUser(${rows.id})" class="btn btn-danger">删除</button>`;
+        }
+
+
+        //删除用户
+        function delUser(id) {
+            alert(id);
+        }
+
+        //搜索处理
+        function querySearch() {
+            $('#table').bootstrapTable('refresh');
+            $('#table').bootstrapTable('selectPage', 1)//跳转到第一页
+        }
+
+        //重置
+        function restSearch(){
+
+            $('#q').val('');
+            $('#state').val('');
+            $('#addresseePhone').val('');
+
+            $('#table').bootstrapTable('refresh');
+            $('#table').bootstrapTable('selectPage', 1)//跳转到第一页
+        }
+
+    </script>
+
+    <script>
+        //自定义日期格式插件
+        tempusDominus.extend(window.tempusDominus.plugins.customDateFormat);
+        let td6 = new tempusDominus.TempusDominus(document.getElementById('beginTime'), {
+            //本地化控制
+            localization: {
+                format: 'yyyy-MM-dd HH:mm:ss',
+            },
+            //布局控制
+            display: {
+                //视图模式(选择年份视图最先开始)
+                viewMode: 'calendar',
+                components: {
+                    //是否开启日历，false:则是时刻模式
+                    calendar: true,
+                    //支持年份选择
+                    year: true,
+                    //是否开启月份选择
+                    month: true,
+                    //支持日期选择
+                    date: true,
+                    //底部按钮中那个时刻选择是否启用，false则表示隐藏，下面三个需要该选项为true时有效
+                    clock: true,
+                    //时
+                    hours: true,
+                    //分
+                    minutes: true,
+                    //秒
+                    seconds: true,
+                    //是否使用24小时制,比如3.15分会变成15.15
+                    useTwentyfourHour: true,
+                },
+                //图标
+                icons: {
+                    time: 'bi bi-clock',
+                    date: 'bi bi-calendar',
+                    up: 'bi bi-arrow-up',
+                    down: 'bi bi-arrow-down',
+                    previous: 'bi bi-chevron-left',
+                    next: 'bi bi-chevron-right',
+                    today: 'bi bi-calendar-check',
+                    clear: 'bi bi-trash',
+                    close: 'bi bi-x',
+                },
+                //视图底部按钮
+                buttons: {
+                    today: true,
+                    clear: true,
+                    close: true,
+                },
+            }
+        });
+        let td7 = new tempusDominus.TempusDominus(document.getElementById('endTime'), {
+            //本地化控制
+            localization: {
+                format: 'yyyy-MM-dd HH:mm:ss',
+            },
+            //布局控制
+            display: {
+                //视图模式(选择年份视图最先开始)
+                viewMode: 'calendar',
+                components: {
+                    //是否开启日历，false:则是时刻模式
+                    calendar: true,
+                    //支持年份选择
+                    year: true,
+                    //是否开启月份选择
+                    month: true,
+                    //支持日期选择
+                    date: true,
+                    //底部按钮中那个时刻选择是否启用，false则表示隐藏，下面三个需要该选项为true时有效
+                    clock: true,
+                    //时
+                    hours: true,
+                    //分
+                    minutes: true,
+                    //秒
+                    seconds: true,
+                    //是否使用24小时制,比如3.15分会变成15.15
+                    useTwentyfourHour: true,
+                },
+                //图标
+                icons: {
+                    time: 'bi bi-clock',
+                    date: 'bi bi-calendar',
+                    up: 'bi bi-arrow-up',
+                    down: 'bi bi-arrow-down',
+                    previous: 'bi bi-chevron-left',
+                    next: 'bi bi-chevron-right',
+                    today: 'bi bi-calendar-check',
+                    clear: 'bi bi-trash',
+                    close: 'bi bi-x',
+                },
+                //视图底部按钮
+                buttons: {
+                    today: true,
+                    clear: true,
+                    close: true,
+                },
+            }
+        });
+        td6.subscribe(tempusDominus.Namespace.events.change, (e) => {
+            td7.updateOptions({
+                restrictions: {
+                    minDate: e.date,
+                },
+            });
+        });
+        td7.subscribe(tempusDominus.Namespace.events.change, (e) => {
+            td6.updateOptions({
+                restrictions: {
+                    maxDate: e.date,
+                },
+            });
+        });
+    </script>
+</body>
+</html>

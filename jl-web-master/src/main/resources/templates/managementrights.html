@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>权限管理</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index-admin.css">
+    <link rel="stylesheet" href="css/index-icons.css">
+    <link rel="stylesheet" href="css/index-icons1.css">
+    <style>
+        ddiv {
+            background-color: aliceblue;
+            width: 100%;
+            height: 300px;
+            float: right;
+
+            /*此元素会作为一个表格单元格显示
+            （类似 <td> 和 <th>）*/
+            display: table-cell;
+            /*垂直居中 */
+            vertical-align: middle;
+            /*水平居中*/
+            text-align: center;
+        }
+         body {
+             margin: 0;
+             padding: 0;
+         }
+        nav {
+            background-color: #333;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        nav li {
+            margin-right: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+
+    </style>
+</head>
+<body>
+<div class="bsa-sidebar" style="float: left;width: 20%">
+    <div class="bsa-sidebar-header">
+        <img src="images/logo.png" class="bsa-logo-icon" alt="logo-icon">
+        <div class="bsa-logo-text">津陵科技</div>
+    </div>
+    <div class="bsa-sidebar-body">
+        <ul>
+            <div th:each="url : ${session.urllist}">
+                <li>
+                    <a href="http://127.0.0.1:8080/show_user_manage" class="active">
+                        <i class="bi bi-house"></i><a th:href="${url['link_url']}" ><p th:text="${url['name']}"></p></a>
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </div>
+</div>
+<div style="float: right;width: 80%">
+<div>
+    <nav>
+        <ul>
+            <li><a href="#">津陵科技</a></li>
+            <div th:each="url : ${session.urllist}">
+                <li><a th:href="${url['link_url']}" ><p th:text="${url['name']}"></p></a></li>
+            </div>
+        </ul>
+        <a href="/">退出</a>
+    </nav>
+</div>
+<div>
+    <div style="margin: auto">
+        1.添加用户
+        <p th:text="${state}"></p>
+    </div>
+    <form action="/adduser" id="form2" class="mt-2">
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">姓名</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">手机号（账号）</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="phone" name="phone">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">角色</label>
+            <div class="col-sm-9">
+                <select class="form-select" name="roletype" id="roletype">
+                    <option>请选择角色身份</option>
+                    <option value="1" >超级管理员</option>
+                    <option value="2">驿站商家</option>
+                    <option value="3">驿站工作人员</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">邮箱</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="email" name="email">
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <div class="lu-center">
+                <input type="submit" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+    <p></p>
+</div>
+    <p>2.添加角色</p>
+    <ddiv>
+        <div>
+            <form th:action="@{/addrolename}">
+                <p th:text="${state1}"></p>
+                <p>请输入你要添加的角色</p>
+                <p><input type="text" name="rolename" style="padding: 10px"></p>
+                <div class="mb-3 row">
+                    <div class="lu-center">
+                        <input type="submit" class="btn btn-primary">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ddiv>
+    <p></p>
+
+    <p>3.修改角色权限</p>
+    <ddiv>
+<form th:action="@{/addmenu}" class="left">
+    <p th:text="${state2}"></p>
+    <!--    传一个list过来遍历显示所有角色和对应的 roletype,菜单-->
+    <div class="col-sm-9">
+        <select class="form-select" name="flag" id="flag">
+            <option style="padding: 100px">请选择要进行的操作</option>
+            <option value=1>增加权限</option>
+            <option value=0>删除权限</option>
+        </select>
+    </div>
+    <div class="col-sm-9">
+    <select class="form-select" name="addroletype" id="addroletype">
+    <div th:each="role : ${session.m_list}">
+        <option name="addroletype" th:value="${role['roletype']}"><div th:text="${role['rolename']}"></div></option>
+    </div>
+    </select>
+    </div>
+    <div class="col-sm-9">
+    <select class="form-select" name="addmenuid" id="addmenuid">
+        <option style="padding: 100px">请选择角色权限</option>
+        <option value="1" >人员管理</option>
+        <option value="2">出入库数据</option>
+        <option value="3">权限管理</option>
+    </select>
+    </div>
+    <div class="mb-3 row">
+        <div class="lu-center">
+            <input type="submit" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+</ddiv>
+</div>
+</body>
+</html>

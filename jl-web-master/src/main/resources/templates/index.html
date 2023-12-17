@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="icon" href="images/logo.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="images/logo.png" sizes="16x16" type="image/png">
+    <meta name="keywords" content="津陵科技,管理,后台">
+    <meta name="author" content="lilu">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login-admin.css">
+    <title>津陵科技 - 用户登录</title>
+</head>
+<body>
+<div class="lilu-title">
+    <h2>津陵科技可视化管理系统</h2>
+</div>
+<div class="lu-login-box d-flex align-items-center">
+    <div class="lilu-login-left card-body">
+        <div class="lilu-logo-box ms-7 mb-4">
+            <img src="images/logo白.png" class="lu-img-logo">
+        </div>
+        <div class="lilu-logo-text text-white ms-7">
+            <p class="card-text mt-3">
+                JinLing.com 将获取以下权限：使用你的头像、昵称等基本信息
+            </p>
+            <p class="card-text mt-3">
+                授权及同意服务信息和JinLing隐私保护指引
+            </p>
+        </div>
+    </div>
+    <div class="lilu-login-right ms-0">
+        <div class="card-body m-4">
+            <div class="mb-4">
+                <div class="lu-blue mt-2"></div><div class="lu-liubai"></div>
+                <h3>登录</h3>
+            </div>
+            <div th:text="${erro}"></div>
+            <div th:text="${state}"></div>
+            <form id="form" class="form" th:action="@{/login}">
+                <div class="mb-4">
+                    <label for="username" class="form-label">账号</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           placeholder="邮箱/用户名/手机号">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">密码</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           placeholder="请输入密码">
+                </div>
+                <div class="mb-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1"
+                               name="remember" value="1">
+                        <label class="form-check-label" for="exampleCheck1">十天内免登录</label>
+                    </div>
+                </div>
+                <div class="mb-3 d-grid gap-2">
+                    <button id="login-btn" type="submit" class="btn btn-secondary">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
